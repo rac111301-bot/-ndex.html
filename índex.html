@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dom Salgados - Gestão Financeira & Balcão</title>
+<style>
+* { box-sizing: border-box; }
+body {
+font-family: 'Segoe UI', Arial, sans-serif;
+margin: 0;
+background-color: #f0f2f5;
+color: #2d3436;
+}
+header {
+background-color: #d9381e;
+color: #ffffff;
+padding: 18px;
+text-align: center;
+box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+}
+header h1 { margin: 0; font-size: 26px; letter-spacing: 1px; }
+header p { margin: 4px 0 0; font-size: 14px; opacity: 0.9; }
+
+.container {
+max-width: 1050px;
+margin: 20px auto;
+padding: 0 15px;
+}
+
+/* Cartões de Resumo */
+.cards-grid {
+display: grid;
+grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+gap: 15px;
+margin-bottom: 20px;
+}
+.card {
+background: #fff;
+padding: 18px;
+border-radius: 8px;
+box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+text-align: center;
+}
+.card h4 { margin: 0 0 8px 0; font-size: 13px; text-transform: uppercase; color: #636e72; }
+.card .valor { font-size: 24px; font-weight: bold; }
+.vendas-card { color: #00b894; }
+.gastos-card { color: #d63031; }
+.lucro-card { color: #0984e3; }
+
+/* Colunas de Trabalho */
+.columns-grid {
+display: grid;
+grid-template-columns: 1.1fr 0.9fr;
+gap: 20px;
+}
+@media (max-width: 800px) {
+.columns-grid { grid-template-columns: 1fr; }
+}
+
+.painel {
+background: #fff;
+padding: 20px;
+border-radius: 8px;
+box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+}
+.painel h3 {
+margin-top: 0;
+padding-bottom: 10px;
+border-bottom: 2px solid #edf2f7;
+font-size: 17px;
+}
+
+.form-row {
+display: flex;
+flex-direction: column;
+gap: 10px;
+margin-bottom: 15px;
+}
+.inputs-inline {
+display: flex;
+gap: 8px;
+}
+input, select, button {
+padding: 10px;
+font-size: 14px;
+border: 1px solid #dfe6e9;
+border-radius: 6px;
+outline: none;
+}
+input:focus, select:focus { border-color: #d9381e; }
+
+.atalhos-rapidos {
+display: flex;
+flex-wrap: wrap;
+gap: 6px;
+margin-bottom: 12px;
+}
+.btn-tag {
+background-color: #f1f2f6;
+border: 1px solid #dcdde1;
+padding: 5px 10px;
+font-size: 12px;
+border-radius: 15px;
+cursor: pointer;
+color: #2f3640;
+}
+.btn-tag:hover { background-color: #e2e6ea; }
+
+button.btn-venda {
+background-color: #00b894;
+color: #fff;
+border: none;
+cursor: pointer;
+font-weight: bold;
+}
+button.btn-gasto {
+background-color: #d63031;
+color: #fff;
+border: none;
+cursor: pointer;
+font-weight: bold;
+}
+button:hover { opacity: 0.9; }
+
+table {
+width: 100%;
+border-collapse: collapse;
+font-size: 13px;
+margin-top: 10px;
+}
+th, td {
+padding: 8px;
+text-align: left;
+border-bottom: 1px solid #f1f2f6;
+}
+th { background-color: #f8f9fa; color: #636e72; }
+.badge {
+font-size: 11px;
+padding: 2px 6px;
+border-radius: 4px;
+background-color: #edf2f7;
+color: #4a5568;
+}
+.btn-del {
+background: transparent;
+border: none;
+color: #b2bec3;
+cursor: pointer;
+font-size: 14px;
+font-weight: bold;
+}
+.btn-del:hover { color: #d63031; }
+
+.acoes-rodape {
+margin-top: 20px;
+display: flex;
+justify-content: flex-end;
+gap: 10px;
+}
+.btn-limpar {
+background-color: #636e72;
+color: white;
+border: none;
+padding: 8px 16px;
+border-radius: 4px;
+cursor: pointer;
+font-size: 12px;
+}
+</style>
+</head>
+<body>
+
+<header>
+<h1>DOM SALGADOS</h1>
+<p>Sistema de Caixa e Apuração de Lucro</p>
+</header>
+
+<div class="container">
+
+<!-- Cartões de Resumo do Lucro Real -->
+<div class="cards-grid">
+<div class="card">
+<h4>Total Vendido (Entradas)</h4>
+<div class="valor vendas-card" id="cardFaturamento">R$ 0,00</div>
+</div>
+<div class="card">
+<h4>Total Gastos (Saídas)</h4>
+<div class="valor gastos-card" id="cardDespesas">R$ 0,00</div>
+</div>
+<div class="card">
+<h4>Lucro Real do Período</h4>
+<div class="valor lucro-card" id="cardLucro">R$ 0,00</div>
+</div>
+</div>
+
+<div class="columns-grid">
+
+<!-- Painel de Vendas (Salgados, Bebidas, etc.) -->
+<div class="painel">
+<h3 style="color: #00b894;">+ Registrar Venda no Balcão</h3>
+
+<!-- Botões de Atalho Rápido -->
+<div class="atalhos-rapidos">
+<button class="btn-tag" onclick="preencherVenda('Coca-Cola Lata', 'Bebida', 5.00)">+ Coca Lata</button>
+<button class="btn-tag" onclick="preencherVenda('Coca-Cola 1L', 'Bebida', 8.00)">+ Coca 1L</button>
+<button class="btn-tag" onclick="preencherVenda('Suco Garrafinha', 'Bebida', 4.50)">+ Suco</button>
+<button class="btn-tag" onclick="preencherVenda('Água Mineral', 'Bebida', 3.00)">+ Água</button>
+<button class="btn-tag" onclick="preencherVenda('Salgado Frito', 'Salgado', 6.00)">+ Salgado Frito</button>
+<button class="btn-tag" onclick="preencherVenda('Salgado Assado', 'Salgado', 6.50)">+ Salgado Assado</button>
+</div>
+
+<div class="form-row">
+<div class="inputs-inline">
+<select id="vendaCategoria" style="width: 35%;">
+<option value="Salgado">Salgado</option>
+<option value="Bebida">Bebida / Refri</option>
+<option value="Outros">Outros</option>
+</select>
+<input type="text" id="vendaNome" placeholder="Nome do item (ex: Coca-Cola, Pastel)" style="width: 65%;">
+</div>
+
+<div class="inputs-inline">
+<input type="number" id="vendaQtd" placeholder="Qtd" min="1" value="1" style="width: 35%;">
+<input type="number" id="vendaPreco" placeholder="Valor Unitário (R$)" step="0.50" style="width: 65%;">
+</div>
+<button class="btn-venda" onclick="lancarVenda()">Adicionar ao Caixa</button>
+</div>
+
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Tipo</th>
+<th>Qtd</th>
+<th>Subtotal</th>
+<th></th>
+</tr>
+</thead>
+<tbody id="tabelaVendas"></tbody>
+</table>
+</div>
+
+<!-- Painel de Despesas (Insumos, Energia, Gás) -->
+<div class="painel">
+<h3 style="color: #d63031;">- Registrar Custos e Gastos</h3>
+<div class="form-row">
+<input type="text" id="despesaDescricao" placeholder="Descrição (ex: Fardo de Coca, Farinha, Energia)">
+<div class="inputs-inline">
+<select id="despesaCategoria" style="width: 50%;">
+<option value="Insumos/Ingredientes">Insumos (Farinha, Frango...)</option>
+<option value="Compra Bebidas">Compra de Bebidas (Estoque)</option>
+<option value="Energia">Energia Elétrica</option>
+<option value="Gás">Gás</option>
+<option value="Embalagens">Embalagens / Descartáveis</option>
+<option value="Outros">Outras Despesas</option>
+</select>
+<input type="number" id="despesaValor" placeholder="Valor (R$)" step="0.01" style="width: 50%;">
+</div>
+<button class="btn-gasto" onclick="lancarDespesa()">Adicionar Despesa</button>
+</div>
+
+<table>
+<thead>
+<tr>
+<th>Descrição</th>
+<th>Categoria</th>
+<th>Valor</th>
+<th></th>
+</tr>
+</thead>
+<tbody id="tabelaDespesas"></tbody>
+</table>
+</div>
+
+</div>
+
+<div class="acoes-rodape">
+<button class="btn-limpar" onclick="limparTudo()">Zerar Caixa do Dia</button>
+</div>
+
+</div>
+
+<script>
+let vendas = JSON.parse(localStorage.getItem('dom_vendas_v2')) || [];
+let despesas = JSON.parse(localStorage.getItem('dom_despesas_v2')) || [];
+
+function formatarMoeda(valor) {
+return valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+}
+
+function preencherVenda(nome, categoria, preco) {
+document.getElementById('vendaNome').value = nome;
+document.getElementById('vendaCategoria').value = categoria;
+document.getElementById('vendaPreco').value = preco.toFixed(2);
+document.getElementById('vendaQtd').value = 1;
+document.getElementById('vendaQtd').focus();
+}
+
+function salvarECalcular() {
+localStorage.setItem('dom_vendas_v2', JSON.stringify(vendas));
+localStorage.setItem('dom_despesas_v2', JSON.stringify(despesas));
+
+const totalVendas = vendas.reduce((acc, item) => acc + (item.qtd * item.preco), 0);
+const totalDespesas = despesas.reduce((acc, item) => acc + item.valor, 0);
+const lucroReal = totalVendas - totalDespesas;
+
+document.getElementById('cardFaturamento').innerText = formatarMoeda(totalVendas);
+document.getElementById('cardDespesas').innerText = formatarMoeda(totalDespesas);
+
+const cardLucro = document.getElementById('cardLucro');
+cardLucro.innerText = formatarMoeda(lucroReal);
+cardLucro.style.color = lucroReal >= 0 ? '#00b894' : '#d63031';
+
+renderizarTabelas();
+}
+
+function lancarVenda() {
+const nome = document.getElementById('vendaNome').value.trim();
+const categoria = document.getElementById('vendaCategoria').value;
+const qtd = parseInt(document.getElementById('vendaQtd').value);
+const preco = parseFloat(document.getElementById('vendaPreco').value);
+
+if (!nome || isNaN(qtd) || isNaN(preco) || qtd <= 0 || preco <= 0) {
+alert('Preencha os dados da venda corretamente.');
+return;
+}
+
+vendas.push({ nome, categoria, qtd, preco });
+document.getElementById('vendaNome').value = '';
+document.getElementById('vendaQtd').value = '1';
+document.getElementById('vendaPreco').value = '';
+salvarECalcular();
+}
+
+function lancarDespesa() {
+const descricao = document.getElementById('despesaDescricao').value.trim();
+const categoria = document.getElementById('despesaCategoria').value;
+const valor = parseFloat(document.getElementById('despesaValor').value);
+
+if (!descricao || isNaN(valor) || valor <= 0) {
+alert('Preencha a descrição e o valor da despesa corretamente.');
+return;
+}
+
+despesas.push({ descricao, categoria, valor });
+document.getElementById('despesaDescricao').value = '';
+document.getElementById('despesaValor').value = '';
+salvarECalcular();
+}
+
+function removerVenda(index) {
+vendas.splice(index, 1);
+salvarECalcular();
+}
+
+function removerDespesa(index) {
+despesas.splice(index, 1);
+salvarECalcular();
+}
+
+function renderizarTabelas() {
+const tbodyVendas = document.getElementById('tabelaVendas');
+tbodyVendas.innerHTML = '';
+vendas.forEach((item, index) => {
+const subtotal = item.qtd * item.preco;
+tbodyVendas.innerHTML += `
+<tr>
+<td><strong>${item.nome}</strong></td>
+<td><span class="badge">${item.categoria}</span></td>
+<td>${item.qtd}</td>
+<td>${formatarMoeda(subtotal)}</td>
+<td><button class="btn-del" onclick="removerVenda(${index})">✕</button></td>
+</tr>
+`;
+});
+
+const tbodyDespesas = document.getElementById('tabelaDespesas');
+tbodyDespesas.innerHTML = '';
+despesas.forEach((item, index) => {
+tbodyDespesas.innerHTML += `
+<tr>
+<td><strong>${item.descricao}</strong></td>
+<td><span class="badge">${item.categoria}</span></td>
+<td>${formatarMoeda(item.valor)}</td>
+<td><button class="btn-del" onclick="removerDespesa(${index})">✕</button></td>
+</tr>
+`;
+});
+}
+
+function limparTudo() {
+if (confirm('Deseja realmente zerar todos os lançamentos do dia?')) {
+vendas = [];
+despesas = [];
+salvarECalcular();
+}
+}
+
+// Carrega os dados na tela ao abrir
+salvarECalcular();
+</script>
+</body>
+</html>
