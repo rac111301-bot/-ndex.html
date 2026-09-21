@@ -9,22 +9,38 @@
         body {
             font-family: 'Segoe UI', Arial, sans-serif;
             margin: 0;
-            background-color: #f0f2f5;
-            color: #2d3436;
+            background-color: #121212;
+            color: #f1f2f6;
         }
+        
+        /* Cabeçalho Preto com Dourado */
         header {
-            background-color: #d9381e;
-            color: #ffffff;
-            padding: 18px;
+            background: linear-gradient(180deg, #1f1f1f 0%, #0d0d0d 100%);
+            border-bottom: 2px solid #d4af37;
+            padding: 22px 18px;
             text-align: center;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.15);
         }
-        header h1 { margin: 0; font-size: 26px; letter-spacing: 1px; }
-        header p { margin: 4px 0 0; font-size: 14px; opacity: 0.9; }
+        header h1 { 
+            margin: 0; 
+            font-size: 30px; 
+            letter-spacing: 3px; 
+            font-weight: 800;
+            color: #d4af37;
+            text-shadow: 0 2px 8px rgba(212, 175, 55, 0.35);
+        }
+        header p { 
+            margin: 6px 0 0; 
+            font-size: 13px; 
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: #e5c07b;
+            opacity: 0.85; 
+        }
 
         .container {
             max-width: 1050px;
-            margin: 20px auto;
+            margin: 25px auto;
             padding: 0 15px;
         }
 
@@ -33,20 +49,31 @@
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
             gap: 15px;
-            margin-bottom: 20px;
+            margin-bottom: 22px;
         }
         .card {
-            background: #fff;
-            padding: 18px;
-            border-radius: 8px;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+            background: #1c1c1e;
+            padding: 20px;
+            border-radius: 10px;
+            border: 1px solid #2e2e33;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.4);
             text-align: center;
         }
-        .card h4 { margin: 0 0 8px 0; font-size: 13px; text-transform: uppercase; color: #636e72; }
-        .card .valor { font-size: 24px; font-weight: bold; }
-        .vendas-card { color: #00b894; }
-        .gastos-card { color: #d63031; }
-        .lucro-card { color: #0984e3; }
+        .card h4 { 
+            margin: 0 0 10px 0; 
+            font-size: 12px; 
+            letter-spacing: 1px;
+            text-transform: uppercase; 
+            color: #9e9ea7; 
+        }
+        .card .valor { 
+            font-size: 26px; 
+            font-weight: bold; 
+            letter-spacing: 0.5px;
+        }
+        .vendas-card { color: #2ecc71; }
+        .gastos-card { color: #e74c3c; }
+        .lucro-card { color: #d4af37; text-shadow: 0 1px 6px rgba(212, 175, 55, 0.25); }
 
         /* Colunas de Trabalho */
         .columns-grid {
@@ -59,36 +86,44 @@
         }
 
         .painel {
-            background: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+            background: #1c1c1e;
+            padding: 22px;
+            border-radius: 10px;
+            border: 1px solid #2c2c30;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.35);
         }
         .painel h3 {
             margin-top: 0;
-            padding-bottom: 10px;
-            border-bottom: 2px solid #edf2f7;
-            font-size: 17px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid #2d3436;
+            font-size: 16px;
+            letter-spacing: 0.5px;
         }
 
         .form-row {
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 12px;
             margin-bottom: 15px;
         }
         .inputs-inline {
             display: flex;
             gap: 8px;
         }
-        input, select, button {
-            padding: 10px;
+        input, select {
+            padding: 10px 12px;
             font-size: 14px;
-            border: 1px solid #dfe6e9;
+            background-color: #252528;
+            color: #ffffff;
+            border: 1px solid #3d3d42;
             border-radius: 6px;
             outline: none;
+            transition: 0.2s border-color;
         }
-        input:focus, select:focus { border-color: #d9381e; }
+        input:focus, select:focus { 
+            border-color: #d4af37; 
+            box-shadow: 0 0 5px rgba(212, 175, 55, 0.3);
+        }
         
         .atalhos-rapidos {
             display: flex;
@@ -97,98 +132,140 @@
             margin-bottom: 12px;
         }
         .btn-tag {
-            background-color: #f1f2f6;
-            border: 1px solid #dcdde1;
-            padding: 5px 10px;
+            background-color: #27272a;
+            border: 1px solid #3f3f46;
+            color: #e4e4e7;
+            padding: 6px 12px;
             font-size: 12px;
             border-radius: 15px;
             cursor: pointer;
-            color: #2f3640;
+            transition: all 0.2s;
         }
-        .btn-tag:hover { background-color: #e2e6ea; }
+        .btn-tag:hover { 
+            border-color: #d4af37; 
+            color: #d4af37; 
+            background-color: #1f1f23;
+        }
 
         button.btn-venda {
-            background-color: #00b894;
-            color: #fff;
+            background: linear-gradient(135deg, #27ae60, #2ecc71);
+            color: #ffffff;
             border: none;
+            padding: 11px;
+            border-radius: 6px;
             cursor: pointer;
             font-weight: bold;
+            font-size: 14px;
+            letter-spacing: 0.5px;
         }
         button.btn-gasto {
-            background-color: #d63031;
-            color: #fff;
+            background: linear-gradient(135deg, #c0392b, #e74c3c);
+            color: #ffffff;
             border: none;
+            padding: 11px;
+            border-radius: 6px;
             cursor: pointer;
             font-weight: bold;
+            font-size: 14px;
+            letter-spacing: 0.5px;
         }
-        button:hover { opacity: 0.9; }
+        button:hover { opacity: 0.92; }
 
         table {
             width: 100%;
             border-collapse: collapse;
             font-size: 13px;
-            margin-top: 10px;
+            margin-top: 12px;
         }
         th, td {
-            padding: 8px;
+            padding: 9px 8px;
             text-align: left;
-            border-bottom: 1px solid #f1f2f6;
+            border-bottom: 1px solid #27272a;
         }
-        th { background-color: #f8f9fa; color: #636e72; }
+        th { 
+            background-color: #242428; 
+            color: #d4af37; 
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 11px;
+            letter-spacing: 0.5px;
+        }
+        td strong { color: #f1f2f6; }
         .badge {
             font-size: 11px;
-            padding: 2px 6px;
+            padding: 3px 7px;
             border-radius: 4px;
-            background-color: #edf2f7;
-            color: #4a5568;
+            background-color: #2a2a2e;
+            color: #a1a1aa;
+            border: 1px solid #3a3a40;
         }
         .btn-del {
             background: transparent;
             border: none;
-            color: #b2bec3;
+            color: #71717a;
             cursor: pointer;
             font-size: 14px;
             font-weight: bold;
+            padding: 2px 6px;
         }
-        .btn-del:hover { color: #d63031; }
+        .btn-del:hover { color: #e74c3c; }
         
         .acoes-rodape {
-            margin-top: 20px;
+            margin-top: 25px;
             display: flex;
             justify-content: flex-end;
-            gap: 10px;
+            gap: 12px;
         }
         .btn-limpar {
-            background-color: #636e72;
-            color: white;
-            border: none;
-            padding: 9px 16px;
+            background-color: #27272a;
+            color: #a1a1aa;
+            border: 1px solid #3f3f46;
+            padding: 10px 18px;
             border-radius: 6px;
             cursor: pointer;
             font-size: 13px;
+        }
+        .btn-limpar:hover {
+            color: #e74c3c;
+            border-color: #e74c3c;
         }
         .btn-imprimir {
-            background-color: #0984e3;
-            color: white;
+            background: linear-gradient(135deg, #c59b27, #d4af37);
+            color: #121212;
             border: none;
-            padding: 9px 16px;
+            padding: 10px 20px;
             border-radius: 6px;
             cursor: pointer;
             font-size: 13px;
-            font-weight: bold;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+            box-shadow: 0 2px 8px rgba(212, 175, 55, 0.25);
+        }
+        .btn-imprimir:hover {
+            background: linear-gradient(135deg, #d4af37, #f1c40f);
         }
 
-        /* Regras exclusivas para Impressão e PDF */
+        /* Impressão Limpa / Salvar PDF */
         @media print {
             body {
-                background-color: #ffffff;
+                background-color: #ffffff !important;
+                color: #000000 !important;
             }
-            .form-row, 
-            .atalhos-rapidos, 
-            .acoes-rodape, 
-            .coluna-acao, 
-            .btn-del {
+            .form-row, .atalhos-rapidos, .acoes-rodape, .coluna-acao, .btn-del {
                 display: none !important;
+            }
+            header {
+                background: #ffffff !important;
+                border-bottom: 2px solid #000000 !important;
+                box-shadow: none !important;
+                padding: 10px !important;
+            }
+            header h1 {
+                color: #000000 !important;
+                text-shadow: none !important;
+            }
+            header p {
+                color: #333333 !important;
             }
             .container {
                 max-width: 100%;
@@ -200,21 +277,37 @@
                 margin-bottom: 15px;
             }
             .card {
-                box-shadow: none;
-                border: 1px solid #dfe6e9;
-                padding: 10px;
+                background: #fff !important;
+                box-shadow: none !important;
+                border: 1px solid #ccc !important;
+                padding: 10px !important;
             }
+            .card h4 { color: #555 !important; }
+            .vendas-card { color: #1e824c !important; }
+            .gastos-card { color: #c0392b !important; }
+            .lucro-card { color: #000000 !important; text-shadow: none !important; }
             .columns-grid {
                 grid-template-columns: 1fr 1fr;
             }
             .painel {
-                box-shadow: none;
-                border: 1px solid #dfe6e9;
-                padding: 12px;
+                background: #fff !important;
+                box-shadow: none !important;
+                border: 1px solid #ccc !important;
+                padding: 12px !important;
             }
-            header {
-                box-shadow: none;
-                padding: 12px;
+            th {
+                background-color: #eee !important;
+                color: #000 !important;
+            }
+            td {
+                color: #000 !important;
+                border-bottom: 1px solid #ddd !important;
+            }
+            td strong { color: #000 !important; }
+            .badge {
+                border: 1px solid #ccc !important;
+                color: #333 !important;
+                background: transparent !important;
             }
         }
     </style>
@@ -223,7 +316,7 @@
 
     <header>
         <h1>DOM SALGADOS</h1>
-        <p>Sistema de Caixa e Apuração de Lucro</p>
+        <p>Gestão de Caixa & Apuração de Lucro</p>
     </header>
 
     <div class="container">
@@ -248,7 +341,7 @@
             
             <!-- Painel de Vendas -->
             <div class="painel">
-                <h3 style="color: #00b894;">+ Registrar Venda no Balcão</h3>
+                <h3 style="color: #2ecc71;">+ Registrar Venda no Balcão</h3>
                 
                 <!-- Botões de Atalho Rápido -->
                 <div class="atalhos-rapidos">
@@ -262,12 +355,12 @@
 
                 <div class="form-row">
                     <div class="inputs-inline">
-                        <select id="vendaCategoria" style="width: 35%;">
+                        <select id="vendaCategoria" style="width: 38%;">
                             <option value="Salgado">Salgado</option>
                             <option value="Bebida">Bebida / Refri</option>
                             <option value="Outros">Outros</option>
                         </select>
-                        <input type="text" id="vendaNome" placeholder="Nome do item (ex: Coca-Cola, Pastel)" style="width: 65%;">
+                        <input type="text" id="vendaNome" placeholder="Item (ex: Pastel, Coxinha)" style="width: 62%;">
                     </div>
 
                     <div class="inputs-inline">
@@ -293,16 +386,16 @@
 
             <!-- Painel de Despesas -->
             <div class="painel">
-                <h3 style="color: #d63031;">- Registrar Custos e Gastos</h3>
+                <h3 style="color: #e74c3c;">- Registrar Custos e Gastos</h3>
                 <div class="form-row">
-                    <input type="text" id="despesaDescricao" placeholder="Descrição (ex: Fardo de Coca, Farinha, Energia)">
+                    <input type="text" id="despesaDescricao" placeholder="Descrição (ex: Farinha, Fardo de Refri, Energia)">
                     <div class="inputs-inline">
                         <select id="despesaCategoria" style="width: 50%;">
                             <option value="Insumos/Ingredientes">Insumos (Farinha, Frango...)</option>
-                            <option value="Compra Bebidas">Compra de Bebidas (Estoque)</option>
+                            <option value="Compra Bebidas">Bebidas (Estoque)</option>
                             <option value="Energia">Energia Elétrica</option>
                             <option value="Gás">Gás</option>
-                            <option value="Embalagens">Embalagens / Descartáveis</option>
+                            <option value="Embalagens">Embalagens</option>
                             <option value="Outros">Outras Despesas</option>
                         </select>
                         <input type="number" id="despesaValor" placeholder="Valor (R$)" step="0.01" style="width: 50%;">
@@ -361,7 +454,7 @@
             
             const cardLucro = document.getElementById('cardLucro');
             cardLucro.innerText = formatarMoeda(lucroReal);
-            cardLucro.style.color = lucroReal >= 0 ? '#00b894' : '#d63031';
+            cardLucro.style.color = lucroReal >= 0 ? '#d4af37' : '#e74c3c';
 
             renderizarTabelas();
         }
@@ -452,7 +545,7 @@
             window.print();
         }
 
-        // Carrega os dados na tela ao abrir
+        // Inicializar com dados salvos
         salvarECalcular();
     </script>
 </body>
