@@ -3,550 +3,291 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dom Salgados - Gestão Financeira & Balcão</title>
-    <style>
-        * { box-sizing: border-box; }
-        body {
-            font-family: 'Segoe UI', Arial, sans-serif;
-            margin: 0;
-            background-color: #121212;
-            color: #f1f2f6;
-        }
-        
-        /* Cabeçalho Preto com Dourado */
-        header {
-            background: linear-gradient(180deg, #1f1f1f 0%, #0d0d0d 100%);
-            border-bottom: 2px solid #d4af37;
-            padding: 22px 18px;
-            text-align: center;
-            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.15);
-        }
-        header h1 { 
-            margin: 0; 
-            font-size: 30px; 
-            letter-spacing: 3px; 
-            font-weight: 800;
-            color: #d4af37;
-            text-shadow: 0 2px 8px rgba(212, 175, 55, 0.35);
-        }
-        header p { 
-            margin: 6px 0 0; 
-            font-size: 13px; 
-            letter-spacing: 1.5px;
-            text-transform: uppercase;
-            color: #e5c07b;
-            opacity: 0.85; 
-        }
-
-        .container {
-            max-width: 1050px;
-            margin: 25px auto;
-            padding: 0 15px;
-        }
-
-        /* Cartões de Resumo */
-        .cards-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 15px;
-            margin-bottom: 22px;
-        }
-        .card {
-            background: #1c1c1e;
-            padding: 20px;
-            border-radius: 10px;
-            border: 1px solid #2e2e33;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.4);
-            text-align: center;
-        }
-        .card h4 { 
-            margin: 0 0 10px 0; 
-            font-size: 12px; 
-            letter-spacing: 1px;
-            text-transform: uppercase; 
-            color: #9e9ea7; 
-        }
-        .card .valor { 
-            font-size: 26px; 
-            font-weight: bold; 
-            letter-spacing: 0.5px;
-        }
-        .vendas-card { color: #2ecc71; }
-        .gastos-card { color: #e74c3c; }
-        .lucro-card { color: #d4af37; text-shadow: 0 1px 6px rgba(212, 175, 55, 0.25); }
-
-        /* Colunas de Trabalho */
-        .columns-grid {
-            display: grid;
-            grid-template-columns: 1.1fr 0.9fr;
-            gap: 20px;
-        }
-        @media (max-width: 800px) {
-            .columns-grid { grid-template-columns: 1fr; }
-        }
-
-        .painel {
-            background: #1c1c1e;
-            padding: 22px;
-            border-radius: 10px;
-            border: 1px solid #2c2c30;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.35);
-        }
-        .painel h3 {
-            margin-top: 0;
-            padding-bottom: 12px;
-            border-bottom: 1px solid #2d3436;
-            font-size: 16px;
-            letter-spacing: 0.5px;
-        }
-
-        .form-row {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            margin-bottom: 15px;
-        }
-        .inputs-inline {
-            display: flex;
-            gap: 8px;
-        }
-        input, select {
-            padding: 10px 12px;
-            font-size: 14px;
-            background-color: #252528;
-            color: #ffffff;
-            border: 1px solid #3d3d42;
-            border-radius: 6px;
-            outline: none;
-            transition: 0.2s border-color;
-        }
-        input:focus, select:focus { 
-            border-color: #d4af37; 
-            box-shadow: 0 0 5px rgba(212, 175, 55, 0.3);
-        }
-        
-        .atalhos-rapidos {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 6px;
-            margin-bottom: 12px;
-        }
-        .btn-tag {
-            background-color: #27272a;
-            border: 1px solid #3f3f46;
-            color: #e4e4e7;
-            padding: 6px 12px;
-            font-size: 12px;
-            border-radius: 15px;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        .btn-tag:hover { 
-            border-color: #d4af37; 
-            color: #d4af37; 
-            background-color: #1f1f23;
-        }
-
-        button.btn-venda {
-            background: linear-gradient(135deg, #27ae60, #2ecc71);
-            color: #ffffff;
-            border: none;
-            padding: 11px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: bold;
-            font-size: 14px;
-            letter-spacing: 0.5px;
-        }
-        button.btn-gasto {
-            background: linear-gradient(135deg, #c0392b, #e74c3c);
-            color: #ffffff;
-            border: none;
-            padding: 11px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: bold;
-            font-size: 14px;
-            letter-spacing: 0.5px;
-        }
-        button:hover { opacity: 0.92; }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 13px;
-            margin-top: 12px;
-        }
-        th, td {
-            padding: 9px 8px;
-            text-align: left;
-            border-bottom: 1px solid #27272a;
-        }
-        th { 
-            background-color: #242428; 
-            color: #d4af37; 
-            font-weight: 600;
-            text-transform: uppercase;
-            font-size: 11px;
-            letter-spacing: 0.5px;
-        }
-        td strong { color: #f1f2f6; }
-        .badge {
-            font-size: 11px;
-            padding: 3px 7px;
-            border-radius: 4px;
-            background-color: #2a2a2e;
-            color: #a1a1aa;
-            border: 1px solid #3a3a40;
-        }
-        .btn-del {
-            background: transparent;
-            border: none;
-            color: #71717a;
-            cursor: pointer;
-            font-size: 14px;
-            font-weight: bold;
-            padding: 2px 6px;
-        }
-        .btn-del:hover { color: #e74c3c; }
-        
-        .acoes-rodape {
-            margin-top: 25px;
-            display: flex;
-            justify-content: flex-end;
-            gap: 12px;
-        }
-        .btn-limpar {
-            background-color: #27272a;
-            color: #a1a1aa;
-            border: 1px solid #3f3f46;
-            padding: 10px 18px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 13px;
-        }
-        .btn-limpar:hover {
-            color: #e74c3c;
-            border-color: #e74c3c;
-        }
-        .btn-imprimir {
-            background: linear-gradient(135deg, #c59b27, #d4af37);
-            color: #121212;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 13px;
-            font-weight: 800;
-            letter-spacing: 0.5px;
-            box-shadow: 0 2px 8px rgba(212, 175, 55, 0.25);
-        }
-        .btn-imprimir:hover {
-            background: linear-gradient(135deg, #d4af37, #f1c40f);
-        }
-
-        /* Impressão Limpa / Salvar PDF */
-        @media print {
-            body {
-                background-color: #ffffff !important;
-                color: #000000 !important;
-            }
-            .form-row, .atalhos-rapidos, .acoes-rodape, .coluna-acao, .btn-del {
-                display: none !important;
-            }
-            header {
-                background: #ffffff !important;
-                border-bottom: 2px solid #000000 !important;
-                box-shadow: none !important;
-                padding: 10px !important;
-            }
-            header h1 {
-                color: #000000 !important;
-                text-shadow: none !important;
-            }
-            header p {
-                color: #333333 !important;
-            }
-            .container {
-                max-width: 100%;
-                margin: 0;
-                padding: 10px;
-            }
-            .cards-grid {
-                grid-template-columns: repeat(3, 1fr);
-                margin-bottom: 15px;
-            }
-            .card {
-                background: #fff !important;
-                box-shadow: none !important;
-                border: 1px solid #ccc !important;
-                padding: 10px !important;
-            }
-            .card h4 { color: #555 !important; }
-            .vendas-card { color: #1e824c !important; }
-            .gastos-card { color: #c0392b !important; }
-            .lucro-card { color: #000000 !important; text-shadow: none !important; }
-            .columns-grid {
-                grid-template-columns: 1fr 1fr;
-            }
-            .painel {
-                background: #fff !important;
-                box-shadow: none !important;
-                border: 1px solid #ccc !important;
-                padding: 12px !important;
-            }
-            th {
-                background-color: #eee !important;
-                color: #000 !important;
-            }
-            td {
-                color: #000 !important;
-                border-bottom: 1px solid #ddd !important;
-            }
-            td strong { color: #000 !important; }
-            .badge {
-                border: 1px solid #ccc !important;
-                color: #333 !important;
-                background: transparent !important;
-            }
-        }
-    </style>
+    <title>RC Gestão de Vendas</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Biblioteca jsPDF para geração de PDF profissional -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 </head>
-<body>
-
-    <header>
-        <h1>DOM SALGADOS</h1>
-        <p>Gestão de Caixa & Apuração de Lucro</p>
-    </header>
-
-    <div class="container">
+<body class="bg-slate-900 text-slate-100 min-h-screen p-4">
+    <div class="max-w-md mx-auto space-y-6">
         
-        <!-- Cartões de Resumo -->
-        <div class="cards-grid">
-            <div class="card">
-                <h4>Total Vendido (Entradas)</h4>
-                <div class="valor vendas-card" id="cardFaturamento">R$ 0,00</div>
-            </div>
-            <div class="card">
-                <h4>Total Gastos (Saídas)</h4>
-                <div class="valor gastos-card" id="cardDespesas">R$ 0,00</div>
-            </div>
-            <div class="card">
-                <h4>Lucro Real do Período</h4>
-                <div class="valor lucro-card" id="cardLucro">R$ 0,00</div>
-            </div>
-        </div>
-
-        <div class="columns-grid">
+        <!-- Cabeçalho -->
+        <header class="bg-gradient-to-r from-blue-700 to-indigo-800 p-5 rounded-2xl shadow-lg">
+            <h1 class="text-xl font-bold">RC Gestão de Vendas</h1>
+            <p class="text-xs text-blue-200 mt-1">Painel Profissional de Vendas, Recibos e Notas Avulsas</p>
             
-            <!-- Painel de Vendas -->
-            <div class="painel">
-                <h3 style="color: #2ecc71;">+ Registrar Venda no Balcão</h3>
-                
-                <!-- Botões de Atalho Rápido -->
-                <div class="atalhos-rapidos">
-                    <button class="btn-tag" onclick="preencherVenda('Coca-Cola Lata', 'Bebida', 5.00)">+ Coca Lata</button>
-                    <button class="btn-tag" onclick="preencherVenda('Coca-Cola 1L', 'Bebida', 8.00)">+ Coca 1L</button>
-                    <button class="btn-tag" onclick="preencherVenda('Suco Garrafinha', 'Bebida', 4.50)">+ Suco</button>
-                    <button class="btn-tag" onclick="preencherVenda('Água Mineral', 'Bebida', 3.00)">+ Água</button>
-                    <button class="btn-tag" onclick="preencherVenda('Salgado Frito', 'Salgado', 6.00)">+ Salgado Frito</button>
-                    <button class="btn-tag" onclick="preencherVenda('Salgado Assado', 'Salgado', 6.50)">+ Salgado Assado</button>
-                </div>
-
-                <div class="form-row">
-                    <div class="inputs-inline">
-                        <select id="vendaCategoria" style="width: 38%;">
-                            <option value="Salgado">Salgado</option>
-                            <option value="Bebida">Bebida / Refri</option>
-                            <option value="Outros">Outros</option>
-                        </select>
-                        <input type="text" id="vendaNome" placeholder="Item (ex: Pastel, Coxinha)" style="width: 62%;">
-                    </div>
-
-                    <div class="inputs-inline">
-                        <input type="number" id="vendaQtd" placeholder="Qtd" min="1" value="1" style="width: 35%;">
-                        <input type="number" id="vendaPreco" placeholder="Valor Unitário (R$)" step="0.50" style="width: 65%;">
-                    </div>
-                    <button class="btn-venda" onclick="lancarVenda()">Adicionar ao Caixa</button>
-                </div>
-
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Item</th>
-                            <th>Tipo</th>
-                            <th>Qtd</th>
-                            <th>Subtotal</th>
-                            <th class="coluna-acao"></th>
-                        </tr>
-                    </thead>
-                    <tbody id="tabelaVendas"></tbody>
-                </table>
+            <!-- Botões de Navegação -->
+            <div class="grid grid-cols-3 gap-2 mt-4">
+                <button onclick="mudarAba('venda')" id="btn-venda" class="bg-blue-600 hover:bg-blue-500 text-xs py-2 px-3 rounded-xl font-medium transition text-center shadow">Nova Venda</button>
+                <button onclick="mudarAba('nota')" id="btn-nota" class="bg-slate-700 hover:bg-slate-600 text-xs py-2 px-3 rounded-xl font-medium transition text-center shadow">Nota Avulsa</button>
+                <button onclick="mudarAba('indicadores')" id="btn-indicadores" class="bg-slate-700 hover:bg-slate-600 text-xs py-2 px-3 rounded-xl font-medium transition text-center shadow">Indicadores</button>
             </div>
+        </header>
 
-            <!-- Painel de Despesas -->
-            <div class="painel">
-                <h3 style="color: #e74c3c;">- Registrar Custos e Gastos</h3>
-                <div class="form-row">
-                    <input type="text" id="despesaDescricao" placeholder="Descrição (ex: Farinha, Fardo de Refri, Energia)">
-                    <div class="inputs-inline">
-                        <select id="despesaCategoria" style="width: 50%;">
-                            <option value="Insumos/Ingredientes">Insumos (Farinha, Frango...)</option>
-                            <option value="Compra Bebidas">Bebidas (Estoque)</option>
-                            <option value="Energia">Energia Elétrica</option>
-                            <option value="Gás">Gás</option>
-                            <option value="Embalagens">Embalagens</option>
-                            <option value="Outros">Outras Despesas</option>
-                        </select>
-                        <input type="number" id="despesaValor" placeholder="Valor (R$)" step="0.01" style="width: 50%;">
-                    </div>
-                    <button class="btn-gasto" onclick="lancarDespesa()">Adicionar Despesa</button>
+        <!-- ABA 1: REGISTRAR NOVA VENDA -->
+        <section id="aba-venda" class="bg-slate-800 p-5 rounded-2xl shadow-xl border border-slate-700 space-y-4">
+            <h2 class="text-lg font-semibold flex items-center gap-2">🛒 Registrar Nova Venda</h2>
+            
+            <form id="formVenda" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-medium text-slate-300 mb-1">SEU NOME / NOME DO FORNECEDOR *</label>
+                    <input type="text" id="fornecedor" value="Dom Salgados" required class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-sm text-slate-100 focus:outline-none focus:border-blue-500">
                 </div>
 
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Descrição</th>
-                            <th>Categoria</th>
-                            <th>Valor</th>
-                            <th class="coluna-acao"></th>
-                        </tr>
-                    </thead>
-                    <tbody id="tabelaDespesas"></tbody>
-                </table>
+                <div>
+                    <label class="block text-xs font-medium text-slate-300 mb-1">NOME DO CLIENTE (COMPRADOR) *</label>
+                    <input type="text" id="cliente" placeholder="Ex: Restaurante Menino Jesus" required class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-sm text-slate-100 focus:outline-none focus:border-blue-500">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-medium text-slate-300 mb-1">PRODUTO / SERVIÇO *</label>
+                    <input type="text" id="produto" placeholder="Ex: Coxinha" required class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-sm text-slate-100 focus:outline-none focus:border-blue-500">
+                </div>
+
+                <div class="grid grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-medium text-slate-300 mb-1">QUANTIDADE *</label>
+                        <input type="text" id="quantidade" value="1" required class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-sm text-slate-100 focus:outline-none focus:border-blue-500">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium text-slate-300 mb-1">VALOR UNITÁRIO (R$) *</label>
+                        <input type="text" id="valorUnitario" value="0.00" required class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-sm text-slate-100 focus:outline-none focus:border-blue-500">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-medium text-slate-300 mb-1">TOTAL (R$)</label>
+                    <input type="text" id="valorTotal" readonly class="w-full bg-slate-900/50 border border-slate-700 rounded-xl px-3 py-2 text-sm text-emerald-400 font-bold">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-medium text-slate-300 mb-1">DATA DA VENDA *</label>
+                    <input type="date" id="dataVenda" required class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-sm text-slate-100 focus:outline-none focus:border-blue-500">
+                </div>
+
+                <button type="submit" class="w-full bg-blue-600 hover:bg-blue-500 py-3 rounded-xl font-semibold text-sm transition shadow-lg">Salvar Venda</button>
+            </form>
+        </section>
+
+        <!-- ABA 2: NOTA AVULSA -->
+        <section id="aba-nota" class="bg-slate-800 p-5 rounded-2xl shadow-xl border border-slate-700 space-y-4 hidden">
+            <h2 class="text-lg font-semibold flex items-center gap-2">📄 Nota Avulsa / Recibo</h2>
+            <div id="conteudoNota" class="bg-slate-900 p-4 rounded-xl border border-slate-700 text-sm space-y-2">
+                <p class="text-slate-400 text-center">Nenhuma venda registrada recente.</p>
             </div>
+            
+            <div class="grid grid-cols-2 gap-2">
+                <button onclick="gerarPDFNota()" class="bg-emerald-600 hover:bg-emerald-500 py-3 px-3 rounded-xl font-semibold text-xs transition shadow-lg flex items-center justify-center gap-1">📥 Baixar PDF</button>
+                <button onclick="enviarWhatsApp()" class="bg-green-600 hover:bg-green-500 py-3 px-3 rounded-xl font-semibold text-xs transition shadow-lg flex items-center justify-center gap-1">💬 Enviar WhatsApp</button>
+            </div>
+        </section>
 
-        </div>
-
-        <div class="acoes-rodape">
-            <button class="btn-imprimir" onclick="imprimirRelatorio()">🖨️ Imprimir / Salvar PDF</button>
-            <button class="btn-limpar" onclick="limparTudo()">Zerar Caixa do Dia</button>
-        </div>
+        <!-- ABA 3: INDICADORES -->
+        <section id="aba-indicadores" class="bg-slate-800 p-5 rounded-2xl shadow-xl border border-slate-700 space-y-4 hidden">
+            <h2 class="text-lg font-semibold flex items-center gap-2">📊 Indicadores de Vendas</h2>
+            <div class="grid grid-cols-2 gap-3">
+                <div class="bg-slate-900 p-3 rounded-xl border border-slate-700">
+                    <span class="text-xs text-slate-400">Total de Vendas</span>
+                    <p id="indTotalVendas" class="text-lg font-bold text-blue-400">0</p>
+                </div>
+                <div class="bg-slate-900 p-3 rounded-xl border border-slate-700">
+                    <span class="text-xs text-slate-400">Faturamento</span>
+                    <p id="indFaturamento" class="text-lg font-bold text-emerald-400">R$ 0,00</p>
+                </div>
+            </div>
+            <div class="space-y-2">
+                <h3 class="text-xs font-semibold text-slate-400 uppercase tracking-wider">Histórico de Vendas Salvas</h3>
+                <div id="listaHistorico" class="space-y-2 max-h-60 overflow-y-auto">
+                    <!-- Preenchido via JS -->
+                </div>
+            </div>
+        </section>
 
     </div>
 
     <script>
-        let vendas = JSON.parse(localStorage.getItem('dom_vendas_v2')) || [];
-        let despesas = JSON.parse(localStorage.getItem('dom_despesas_v2')) || [];
+        // Data atual no input
+        document.getElementById('dataVenda').valueAsDate = new Date();
 
-        function formatarMoeda(valor) {
-            return valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+        // Conversor seguro aceitando ponto (.) e vírgula (,)
+        function parseNumero(valor) {
+            if (!valor) return 0;
+            if (typeof valor === 'number') return valor;
+            let limpo = valor.toString().trim().replace(/\s/g, '');
+            if (limpo.includes('.') && limpo.includes(',')) {
+                limpo = limpo.replace(/\./g, '').replace(',', '.');
+            } else if (limpo.includes(',')) {
+                limpo = limpo.replace(',', '.');
+            }
+            return parseFloat(limpo) || 0;
         }
 
-        function preencherVenda(nome, categoria, preco) {
-            document.getElementById('vendaNome').value = nome;
-            document.getElementById('vendaCategoria').value = categoria;
-            document.getElementById('vendaPreco').value = preco.toFixed(2);
-            document.getElementById('vendaQtd').value = 1;
-            document.getElementById('vendaQtd').focus();
+        // Cálculo Automático
+        const inputQtd = document.getElementById('quantidade');
+        const inputUnit = document.getElementById('valorUnitario');
+        const inputTotal = document.getElementById('valorTotal');
+
+        function calcular() {
+            let qtd = parseNumero(inputQtd.value);
+            let unit = parseNumero(inputUnit.value);
+            let total = qtd * unit;
+            inputTotal.value = total.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
         }
 
-        function salvarECalcular() {
-            localStorage.setItem('dom_vendas_v2', JSON.stringify(vendas));
-            localStorage.setItem('dom_despesas_v2', JSON.stringify(despesas));
+        inputQtd.addEventListener('input', calcular);
+        inputUnit.addEventListener('input', calcular);
+        calcular();
 
-            const totalVendas = vendas.reduce((acc, item) => acc + (item.qtd * item.preco), 0);
-            const totalDespesas = despesas.reduce((acc, item) => acc + item.valor, 0);
-            const lucroReal = totalVendas - totalDespesas;
+        // Troca de Abas Segura
+        function mudarAba(aba) {
+            ['venda', 'nota', 'indicadores'].forEach(a => {
+                document.getElementById(`aba-${a}`).classList.add('hidden');
+                document.getElementById(`btn-${a}`).className = "bg-slate-700 hover:bg-slate-600 text-xs py-2 px-3 rounded-xl font-medium transition text-center shadow";
+            });
+            document.getElementById(`aba-${aba}`).classList.remove('hidden');
+            document.getElementById(`btn-${aba}`).className = "bg-blue-600 hover:bg-blue-500 text-xs py-2 px-3 rounded-xl font-medium transition text-center shadow";
 
-            document.getElementById('cardFaturamento').innerText = formatarMoeda(totalVendas);
-            document.getElementById('cardDespesas').innerText = formatarMoeda(totalDespesas);
+            if (aba === 'indicadores') atualizarIndicadores();
+            if (aba === 'nota') atualizarNotaAvulsa();
+        }
+
+        // Salvar Vendas (localStorage)
+        let vendas = JSON.parse(localStorage.getItem('rc_vendas')) || [];
+
+        document.getElementById('formVenda').addEventListener('submit', function(e) {
+            e.preventDefault();
             
-            const cardLucro = document.getElementById('cardLucro');
-            cardLucro.innerText = formatarMoeda(lucroReal);
-            cardLucro.style.color = lucroReal >= 0 ? '#d4af37' : '#e74c3c';
+            const novaVenda = {
+                id: Date.now(),
+                fornecedor: document.getElementById('fornecedor').value,
+                cliente: document.getElementById('cliente').value,
+                produto: document.getElementById('produto').value,
+                quantidade: parseNumero(inputQtd.value),
+                valorUnitario: parseNumero(inputUnit.value),
+                valorTotal: parseNumero(inputQtd.value) * parseNumero(inputUnit.value),
+                data: document.getElementById('dataVenda').value
+            };
 
-            renderizarTabelas();
+            vendas.unshift(novaVenda); // Adiciona no início
+            localStorage.setItem('rc_vendas', JSON.stringify(vendas));
+
+            alert('Venda registrada e salva com sucesso!');
+            this.reset();
+            document.getElementById('dataVenda').valueAsDate = new Date();
+            document.getElementById('fornecedor').value = "Dom Salgados";
+            calcular();
+            mudarAba('indicadores');
+        });
+
+        // Atualizar Indicadores e Histórico
+        function atualizarIndicadores() {
+            vendas = JSON.parse(localStorage.getItem('rc_vendas')) || [];
+            document.getElementById('indTotalVendas').innerText = vendas.length;
+            
+            let faturamentoTotal = vendas.reduce((acc, v) => acc + v.valorTotal, 0);
+            document.getElementById('indFaturamento').innerText = faturamentoTotal.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+
+            let html = '';
+            if (vendas.length === 0) {
+                html = '<p class="text-xs text-slate-500 text-center py-4">Nenhuma venda registrada ainda.</p>';
+            } else {
+                vendas.forEach(v => {
+                    html += `
+                        <div class="bg-slate-900 p-3 rounded-xl border border-slate-700 text-xs space-y-1">
+                            <div class="flex justify-between font-semibold">
+                                <span class="text-blue-400">${v.cliente}</span>
+                                <span class="text-emerald-400">${v.valorTotal.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</span>
+                            </div>
+                            <div class="text-slate-400">${v.produto} (Qtd: ${v.quantidade})</div>
+                            <div class="text-slate-500 text-[10px]">Data: ${v.data.split('-').reverse().join('/')} | Fornecedor: ${v.fornecedor}</div>
+                        </div>
+                    `;
+                });
+            }
+            document.getElementById('listaHistorico').innerHTML = html;
         }
 
-        function lancarVenda() {
-            const nome = document.getElementById('vendaNome').value.trim();
-            const categoria = document.getElementById('vendaCategoria').value;
-            const qtd = parseInt(document.getElementById('vendaQtd').value);
-            const preco = parseFloat(document.getElementById('vendaPreco').value);
-
-            if (!nome || isNaN(qtd) || isNaN(preco) || qtd <= 0 || preco <= 0) {
-                alert('Preencha os dados da venda corretamente.');
+        // Atualizar Nota Avulsa com a última venda
+        function atualizarNotaAvulsa() {
+            vendas = JSON.parse(localStorage.getItem('rc_vendas')) || [];
+            const container = document.getElementById('conteudoNota');
+            if (vendas.length === 0) {
+                container.innerHTML = '<p class="text-slate-400 text-center">Nenhuma venda registrada para gerar nota.</p>';
                 return;
             }
-
-            vendas.push({ nome, categoria, qtd, preco });
-            document.getElementById('vendaNome').value = '';
-            document.getElementById('vendaQtd').value = '1';
-            document.getElementById('vendaPreco').value = '';
-            salvarECalcular();
+            const v = vendas[0];
+            container.innerHTML = `
+                <div class="border-b border-slate-800 pb-2 mb-2">
+                    <p class="font-bold text-base text-blue-400">${v.fornecedor}</p>
+                    <p class="text-xs text-slate-400">Comprovante de Venda / Nota Avulsa</p>
+                </div>
+                <div class="space-y-1">
+                    <p><strong>Cliente:</strong> ${v.cliente}</p>
+                    <p><strong>Produto/Serviço:</strong> ${v.produto}</p>
+                    <p><strong>Quantidade:</strong> ${v.quantidade}</p>
+                    <p><strong>Valor Unitário:</strong> ${v.valorUnitario.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</p>
+                    <p class="text-emerald-400 font-bold pt-2 border-t border-slate-800">Total: ${v.valorTotal.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}</p>
+                    <p class="text-[10px] text-slate-500 pt-1">Data: ${v.data.split('-').reverse().join('/')}</p>
+                </div>
+            `;
         }
 
-        function lancarDespesa() {
-            const descricao = document.getElementById('despesaDescricao').value.trim();
-            const categoria = document.getElementById('despesaCategoria').value;
-            const valor = parseFloat(document.getElementById('despesaValor').value);
-
-            if (!descricao || isNaN(valor) || valor <= 0) {
-                alert('Preencha a descrição e o valor da despesa corretamente.');
+        // Gerar PDF direto usando jsPDF
+        function gerarPDFNota() {
+            vendas = JSON.parse(localStorage.getItem('rc_vendas')) || [];
+            if (vendas.length === 0) {
+                alert('Nenhuma venda para exportar.');
                 return;
             }
+            const v = vendas[0];
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
 
-            despesas.push({ descricao, categoria, valor });
-            document.getElementById('despesaDescricao').value = '';
-            document.getElementById('despesaValor').value = '';
-            salvarECalcular();
+            doc.setFont("helvetica", "bold");
+            doc.setFontSize(16);
+            doc.text(v.fornecedor, 20, 20);
+
+            doc.setFontSize(11);
+            doc.setFont("helvetica", "normal");
+            doc.text("Comprovante de Venda / Nota Avulsa", 20, 28);
+
+            doc.setLineWidth(0.5);
+            doc.line(20, 33, 190, 33);
+
+            doc.setFont("helvetica", "bold");
+            doc.text("Dados da Venda:", 20, 45);
+            doc.setFont("helvetica", "normal");
+            doc.text(`Cliente: ${v.cliente}`, 20, 55);
+            doc.text(`Produto / Serviço: ${v.produto}`, 20, 63);
+            doc.text(`Quantidade: ${v.quantidade}`, 20, 71);
+            doc.text(`Valor Unitário: ${v.valorUnitario.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}`, 20, 79);
+            
+            doc.setFont("helvetica", "bold");
+            doc.text(`Valor Total: ${v.valorTotal.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}`, 20, 91);
+            doc.text(`Data: ${v.data.split('-').reverse().join('/')}`, 20, 99);
+
+            doc.save(`Nota_Avulsa_${v.cliente.replace(/\s+/g, '_')}.pdf`);
         }
 
-        function removerVenda(index) {
-            vendas.splice(index, 1);
-            salvarECalcular();
-        }
-
-        function removerDespesa(index) {
-            despesas.splice(index, 1);
-            salvarECalcular();
-        }
-
-        function renderizarTabelas() {
-            const tbodyVendas = document.getElementById('tabelaVendas');
-            tbodyVendas.innerHTML = '';
-            vendas.forEach((item, index) => {
-                const subtotal = item.qtd * item.preco;
-                tbodyVendas.innerHTML += `
-                    <tr>
-                        <td><strong>${item.nome}</strong></td>
-                        <td><span class="badge">${item.categoria}</span></td>
-                        <td>${item.qtd}</td>
-                        <td>${formatarMoeda(subtotal)}</td>
-                        <td class="coluna-acao"><button class="btn-del" onclick="removerVenda(${index})">✕</button></td>
-                    </tr>
-                `;
-            });
-
-            const tbodyDespesas = document.getElementById('tabelaDespesas');
-            tbodyDespesas.innerHTML = '';
-            despesas.forEach((item, index) => {
-                tbodyDespesas.innerHTML += `
-                    <tr>
-                        <td><strong>${item.descricao}</strong></td>
-                        <td><span class="badge">${item.categoria}</span></td>
-                        <td>${formatarMoeda(item.valor)}</td>
-                        <td class="coluna-acao"><button class="btn-del" onclick="removerDespesa(${index})">✕</button></td>
-                    </tr>
-                `;
-            });
-        }
-
-        function limparTudo() {
-            if (confirm('Deseja realmente zerar todos os lançamentos do dia?')) {
-                vendas = [];
-                despesas = [];
-                salvarECalcular();
+        // Enviar via WhatsApp
+        function enviarWhatsApp() {
+            vendas = JSON.parse(localStorage.getItem('rc_vendas')) || [];
+            if (vendas.length === 0) {
+                alert('Nenhuma venda registrada para enviar.');
+                return;
             }
-        }
+            const v = vendas[0];
+            const texto = `*${v.fornecedor}* - Comprovante de Venda\n\n` +
+                          `👤 *Cliente:* ${v.cliente}\n` +
+                          `📦 *Produto:* ${v.produto}\n` +
+                          `🔢 *Qtd:* ${v.quantidade}\n` +
+                          `💰 *Unitário:* ${v.valorUnitario.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}\n` +
+                          `✅ *Total:* ${v.valorTotal.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })}\n` +
+                          `📅 *Data:* ${v.data.split('-').reverse().join('/')}`;
 
-        function imprimirRelatorio() {
-            window.print();
+            const url = `https://api.whatsapp.com/send?text=${encodeURIComponent(texto)}`;
+            window.open(url, '_blank');
         }
-
-        // Inicializar com dados salvos
-        salvarECalcular();
     </script>
 </body>
 </html>
